@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <title>Chat | room</title>
+</head>
+<body>
+
+<div class="content-wrapper">
+    <div id="app">
+        <div class="chat">
+            <ul class="chat-users collection">
+                <li class="collection-item"
+                    v-for="u in users"
+                    :class="{'active': u.id === user.id}"
+                >
+                    <div>
+                        {{u.name}}
+                        <a v-if="u.id === user.id" href="http://localhost:3000" class="secondary-content">
+                            <i class="material-icons">exit_to_app</i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <div class="chat-messages" ref="messages">
+                <chat-message
+                        v-for="(m, idx) in messages"
+                        :message="m"
+                        :user="user"
+                        :key="idx"
+                ></chat-message>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="input-field input-field--message left">
+                <i class="material-icons prefix">mode_edit</i>
+                <input
+                        type="text"
+                        placeholder="Type your message..."
+                        v-model.trim="message"
+                        autofocus
+                        autocomplete="false"
+                        @keydown.enter="sendMessage"
+                >
+            </div>
+            <div class="btn-send--wrapper right">
+                <a class="btn-floating btn-large waves-effect waves-light"
+                   @click="sendMessage"
+                   :disabled="message.length === 0"
+                >
+                    <i class="material-icons">send</i>
+                </a>
+            </div>
+        </div>
+        <footer class="footer page-footer">
+            <span>Version 0.0.1</span>
+        </footer>
+    </div>
+</div>
+
+<script src="./assets/js/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
